@@ -1,0 +1,4 @@
+[13-Dec-2019 18:05:05 America/New_York] PHP Warning:  Use of undefined constant ROOT - assumed 'ROOT' (this will throw an Error in a future version of PHP) in E:\xampp7\htdocs\APRO\admvisch\public\themes\neon\assets\js\filemanager\config\config.php on line 26
+[13-Dec-2019 18:05:06 America/New_York] PHP Warning:  Use of undefined constant ROOT - assumed 'ROOT' (this will throw an Error in a future version of PHP) in E:\xampp7\htdocs\APRO\admvisch\public\themes\neon\assets\js\filemanager\config\config.php on line 26
+[13-Dec-2019 18:05:06 America/New_York] PHP Notice:  Undefined variable: storeFolder in E:\xampp7\htdocs\APRO\admvisch\public\themes\neon\assets\js\filemanager\upload.php on line 31
+[13-Dec-2019 18:05:06 America/New_York] PHP Notice:  Undefined variable: storeFolderThumb in E:\xampp7\htdocs\APRO\admvisch\public\themes\neon\assets\js\filemanager\upload.php on line 32

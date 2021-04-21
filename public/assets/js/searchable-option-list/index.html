@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="sol.css">
+    <script type="text/javascript" src="sol.js"></script>
+    
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+		
+			<div class="form-group">
+				<div class="input-group">
+					<label class="control-label">Categoría</label>		
+					<select id="demonstration" name="character0" multiple="multiple" style="min-width:300px">
+						<optgroup label="The Griffins">
+							<option value="Peter" selected>Peter Griffin</option>
+							<option value="Lois">Lois Griffin</option>
+							<option value="Chris">Chris Griffin</option>
+							<option value="Meg">Meg Griffin</option>
+							<option value="Stewie">Stewie Griffin</option>
+						</optgroup>
+						<optgroup label="Peter's Friends">
+							<option value="Cleveland">Cleveland Brown</option><br>
+							<option value="Joe">Joe Swanson</option><br>
+							<option value="Quagmire">Glenn Quagmire</option><br>
+						</optgroup>
+						<option value="Evil Monkey">Evil Monkey</option>
+						<option value="Herbert">John Herbert</option>
+						<option value="Adam" selected>Adam West</option>
+						<option value="Buzz Killington">Buzz Killington</option>
+						<option value="Tricia">Tricia Takanawa</option>
+						<option value="Tom">Tom Tucker</option>
+						<option value="Jake">Jake Tucker</option>
+						<option value="Diane">Diane Simmons</option>
+						<option value="Ollie">Ollie Williams</option>
+						<option value="Dr Hartmann">Dr. Elmer Hartmann</option>
+						<option value="Barbara">Barbara Pewterschmidt</option>
+						<option value="Carter">Carter Pewterschmidt</option>
+						<option value="Neil">Neil Goldmann</option>
+						<option value="Mort">Mort Goldmann</option>
+						<option value="Muriel">Muriel Goldmann</option>
+						<option value="Consuela">Consuela</option>
+						<option value="Jillian">Jillian Russel</option>
+						<option value="Phineas and Barnaby" selected>Phineas and Barnaby</option>
+						<option value="Vern and Johnny">Vern and Johnny</option>
+						<option value="Ernie">Ernie The Giant Chicken</option>
+						<option value="Bruce">Bruce</option>
+						<option value="Jeffrey">Jeffrey</option>
+						<option value="Carl">Carl</option><br>
+					</select>
+				</div>
+			</div>
+		
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+    $(function() {
+        // initialize sol
+        $('#demonstration').searchableOptionList({ 
+			maxHeight: '300px', 
+			showSelectAll: true,
+			texts: {
+                noItemsAvailable: 'Resultado no encontrado',
+                selectAll: 'Seleccionar Todo',
+                selectNone: 'Remover Selección',
+                quickDelete: '&times;',
+                searchplaceholder: 'Haz click para buscar',
+                loadingData: 'Cargando...',
+                itemsSelected: '{$a} items seleccionados'
+            },
+		});
+    });
+</script>
+
+</body>
+</html>

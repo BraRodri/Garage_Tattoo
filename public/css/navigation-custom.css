@@ -1,0 +1,51 @@
+.navigation-item:not(.navigation-brand-text):hover .navigation-link,
+.navigation-item:not(.navigation-brand-text):focus .navigation-link,
+.navigation-item:not(.navigation-brand-text).is-active .navigation-link {
+    color: #F9BF00;
+}
+.navigation-avatar-item .navigation-link img {
+    border: solid 2px #F9BF00;
+}
+.navigation-item:hover > .navigation-link > .submenu-indicator:after,
+.navigation-item:focus > .navigation-link > .submenu-indicator:after,
+.navigation-item.is-active > .navigation-link > .submenu-indicator:after {
+    border-color: transparent #F9BF00 #F9BF00 transparent;
+}
+.navigation-btn {
+    border-color: #F9BF00;
+    background-color: #F9BF00;
+}
+.navigation-btn:hover,
+.navigation-btn:focus {
+    background-color: #e5af00;
+}
+.navigation-badge {
+    background-color: #F9BF00;
+}
+.navigation-input:hover,
+.navigation-input:focus {
+    border-color: #F9BF00;
+}
+.navigation-btn:hover .navigation-search-icon {
+    color: #F9BF00;
+}
+.navigation-dropdown-item:hover > .navigation-dropdown-link,
+.navigation-dropdown-item:focus > .navigation-dropdown-link,
+.navigation-dropdown-item.is-active > .navigation-dropdown-link {
+    color: #F9BF00;
+}
+.navigation-dropdown-item:hover > .navigation-dropdown-link > .submenu-indicator:after,
+.navigation-dropdown-item:focus > .navigation-dropdown-link > .submenu-indicator:after,
+.navigation-dropdown-item.is-active > .navigation-dropdown-link > .submenu-indicator:after {
+    border-color: transparent #F9BF00 #F9BF00 transparent;
+}
+.navigation-list > li > a:hover {
+    color: #F9BF00;
+}
+@media (min-width: 992px) {
+    .navigation-item:not(.navigation-brand-text):hover .navigation-link,
+    .navigation-item:not(.navigation-brand-text):focus .navigation-link,
+    .navigation-item:not(.navigation-brand-text).is-active .navigation-link {
+        border-bottom-color: #F9BF00 !important;
+    }
+}
