@@ -81,12 +81,18 @@ Route::get('/devoluciones', [App\Http\Controllers\HomeController::class, 'devolu
 Route::get('/terminos-y-condiciones', [App\Http\Controllers\HomeController::class, 'terminosCondiciones'])->name('terminosCondiciones');
 Route::get('/contacto', [App\Http\Controllers\HomeController::class, 'contacto'])->name('contacto');
 Route::get('/seguimiento-pedido', [App\Http\Controllers\HomeController::class, 'seguimientoPedido'])->name('seguimiento.pedido');
-Route::get('/mi-cuenta', [App\Http\Controllers\HomeController::class, 'miCuenta'])->name('mi.cuenta');
-Route::get('/mis-pedidos', [App\Http\Controllers\HomeController::class, 'misPedidos'])->name('mis.pedidos');
-Route::get('/mis-datos-cuenta', [App\Http\Controllers\HomeController::class, 'misDatos'])->name('mis.datos');
-Route::get('/mis-puntos', [App\Http\Controllers\HomeController::class, 'misPuntos'])->name('mis.puntos');
 Route::get('/blog', [App\Http\Controllers\HomeController::class, 'allBlogs'])->name('all.blogs');
 Route::get('/blog-detalle/{id}', [App\Http\Controllers\HomeController::class, 'detalleBlog'])->name('blog.detalle');
+
+//mi cuenta
+Route::get('/mi-cuenta', [App\Http\Controllers\MiCuentaController::class, 'miCuenta'])->name('mi.cuenta');
+Route::get('/mis-pedidos', [App\Http\Controllers\MiCuentaController::class, 'misPedidos'])->name('mis.pedidos');
+Route::get('/mis-datos-cuenta', [App\Http\Controllers\MiCuentaController::class, 'misDatos'])->name('mis.datos');
+Route::get('/mis-puntos', [App\Http\Controllers\MiCuentaController::class, 'misPuntos'])->name('mis.puntos');
+Route::post('/mis-datos-cuenta/update', [App\Http\Controllers\MiCuentaController::class, 'updateMisDatos'])->name('mis.datos.update');
+Route::post('/mis-datos-cuenta/enter', [App\Http\Controllers\MiCuentaController::class, 'agregarNuevaDireccion'])->name('mis.datos.enter');
+Route::get('/mis-datos-cuenta/delete/{id}', [App\Http\Controllers\MiCuentaController::class, 'eliminarDireccion'])->name('mis.datos.delete');
+Route::post('/mis-datos-cuenta/address/update', [App\Http\Controllers\MiCuentaController::class, 'updateAddressDatos'])->name('datos.address.update');
 
 //tienda
 Route::get('/producto/{id}', [App\Http\Controllers\DetalleProductController::class, 'show'])->name('detalle.producto');
@@ -231,7 +237,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admvisch'], function () {
     Route::post('dispatch/update', [ConfigDispatchController::class, 'update'])->name('config.dispatch.update');
     Route::get('dispatch/delete/{id}', [ConfigDispatchController::class, 'delete'])->name('config.dispatch.delete');
     Route::post('dispatch/status', [ConfigDispatchController::class, 'status'])->name('config.dispatch.status');
-
+    Route::post('dispatch/retiroTienda', [ConfigDispatchController::class, 'statusRetiroTienda'])->name('config.dispatch.retiro.tienda');
 
     //Rutas de Mini Banner Home
 
@@ -424,6 +430,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admvisch'], function () {
     Route::post('products/uploadGalleries', [ProductsController::class, 'uploadGalleries'])->name('products.uploadGalleries');
     Route::post('products/loadGalleriesByExcel', [ProductsController::class, 'loadGalleriesByExcel'])->name('products.loadGalleriesByExcel');
 
+    Route::get('products/attribute/get/{id}', [AttributeController::class, 'getAttributeId'])->name('products.attribute.get');
 
     //Products Galleries
 

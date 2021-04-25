@@ -44,10 +44,13 @@ class CarroDetalleController extends Controller
 
         $product = Products::find($request->products_id);
         $productGallleries = $product->galleries;
+        $price_product = $product->offer_price == 0 ? $product->normal_price : $product->offer_price;
+        $quantity = (int)$request->quantity;
+
         Cart::add(array(
             'id' => $product->id,
             'name' => $product->title,
-            'price' => $product->offer_price == 0 ? $product->normal_price : $product->offer_price,
+            'price' => $price_product,
             'quantity' => $request->quantity,
             'attributes' => array('color' => $request->color, 'talla' => $request->talla, 'sku' => $product->sku, 'medida' => $product->medida, 'galleries' => $productGallleries),
             'associatedModel' => $product

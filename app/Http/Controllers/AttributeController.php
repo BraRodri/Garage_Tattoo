@@ -204,4 +204,12 @@ class AttributeController extends Controller
 
         echo json_encode(array("status" => $status, "class_status" => $class_status, "text_status" => $text_status));
     }
+
+    public function getAttributeId($id)
+    {
+        $data = Attribute::findOrFail($id);
+        if ($data) {
+            echo json_encode(array("data" => $data));
+        }
+    }
 }

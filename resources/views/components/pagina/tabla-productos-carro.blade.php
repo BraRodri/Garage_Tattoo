@@ -1,3 +1,4 @@
+
 @if(count($carro)>0)
 
     <form action="{{ route('micarro.update') }}" method="POST" id="form1">
@@ -20,7 +21,7 @@
 
                         <div class="d-flex justify-content-between">
                             <h2>{{ $detail->name }}</h2>
-                            <span>${{ convertirValor($detail->price) }}</span>
+                            <span>${{ convertirValor($detail->getPriceSum()) }} </span>
                         </div>
                         <div class="">
                             <p>CÓDIGO: {{$detail->associatedModel->sku}}</p>

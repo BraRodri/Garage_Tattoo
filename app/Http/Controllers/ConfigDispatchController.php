@@ -173,4 +173,32 @@ class ConfigDispatchController extends Controller
 
         echo json_encode(array("status" => $status, "class_status" => $class_status, "text_status" => $text_status));
     }
+
+    public function statusRetiroTienda()
+    {
+        $class_status = $text_status = '';
+        $status = 0;
+
+        if (isset($_POST['module_name']) && !empty($_POST['module_name']) && isset($_POST['id']) && !empty($_POST['id'])) {
+            $id = Helper::postValue('id');
+            $module_name = Helper::postValue('module_name');
+
+            $configuration = Configurations::findOrFail($id);
+
+            $active = ($configuration->office_shipping_active == 0) ? 1 : 0;
+
+            $post = array(
+                'office_shipping_active' => $active,
+                'author' => Auth::user()->name
+            );
+
+            if ($update = Configurations::findOrFail($id)->update($post)) {
+                $class_status = ($active == 1) ? "btn-success" : "btn-danger";
+                $text_status = ($active == 1) ? "Activado" : "Desactivado";
+                $status = 1;
+            }
+        }
+
+        echo json_encode(array("status" => $status, "class_status" => $class_status, "text_status" => $text_status));
+    }
 }

@@ -469,7 +469,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Agregue un nuevo atributo:</label>
-                                    <select class="form-control w-75" name="attributo" id="attributo">
+                                    <select class="form-control w-75" name="attributo" id="losAttributos">
                                         <option value="">Seleccionar</option>
                                         <?php if (current($attributes) > 0) {
                                             foreach (end($attributes) as $atribute) { ?>
@@ -478,18 +478,11 @@
                                             <?php }
                                         } ?>
                                     </select>
-                                    <button class="btn btn-primary mt-3" type="button" style="margin-top: 10px">Agregar</button>
+                                    <button class="btn btn-primary mt-3" type="button" style="margin-top: 10px" onclick="aggAtributoProduct()">Agregar</button>
                                     <div class="clearfix"></div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="control-label">Nombre Atributo</label>
-                                    <select class="form-control js-example-basic-multiple" multiple="multiple" id="" name="" placeholder="Seleccione...">
-                                        <option>orange</option>
-                                        <option>white</option>
-                                        <option>purple</option>
-                                    </select>
-                                    <div class="clearfix"></div>
+                                <div id="divDinamico">
                                 </div>
 
                             </div>
@@ -586,6 +579,49 @@
     <br />
     <x-slot name="js">
         <script type="text/javascript">
+
+            function aggAtributoProduct() {
+                var id_atributo = document.getElementById("losAttributos").value;
+
+                if(id_atributo){
+                    var url = "{{route('products.attribute.get', ':id')}}";
+                    url = url.replace(':id', id_atributo);
+                    var data = {}
+
+                    $.ajax({
+                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        type: "GET",
+                        encoding: "UTF-8",
+                        url: url,
+                        data: data,
+                        dataType: 'json',
+                        success: function(response) {
+
+                            console.log(response.data);
+
+                            var atributosValues = response.data.values;
+                            var atributeNombre = response.data.title;
+                            var atribute_id = response.data.id;
+
+                            var valoresSeparados = atributosValues.split(',');
+
+                            var htmlDivContainer = '<div class="form-group">';
+                                htmlDivContainer +=     '<label class="control-label">'+atributeNombre+'</label>';
+                                htmlDivContainer +=     '<select class="form-control js-example-basic-multiple" multiple="multiple" id="" name="" placeholder="Seleccione...">';
+                                htmlDivContainer +=         '<option>1</option>';
+                                htmlDivContainer +=     '</select>';
+                                htmlDivContainer +=     '<div class="clearfix"></div>';
+                                htmlDivContainer += '</div>';
+
+                            $("#divDinamico").append(htmlDivContainer);
+                        }
+                    });
+
+                } else {
+                    alert("Por favor, seleccione un atributo para agregar.");
+                }
+
+            }
 
             jQuery(document).ready(function($) {
 
@@ -704,6 +740,10 @@
                     },
                 });
             });
+
+
+
+
 
         </script>
     </x-slot>

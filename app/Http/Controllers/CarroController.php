@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartList;
+use App\Models\Clients;
+use App\Models\ClientsAddress;
+use App\Models\ConfigDispatch;
+use App\Models\Configurations;
 use App\Models\Cotizaciones;
 use App\Models\CotizacionesDetalle;
 use App\Models\Orders;
@@ -35,11 +39,30 @@ class CarroController extends Controller
 
     public function index()
     {
+        $info_client = "";
+        $address_clients = "";
+
         $PaginaTitulo = "Mi Carro";
         $carro = Cart::getContent();
         $regions = Regions::orderBy('position')->get();
+        $configuration = Configurations::findOrFail(1);
+        $config_dispatchs = ConfigDispatch::where('active', 1)->get();
 
-        return view('pages.carro')->with(['PaginaTitulo' => $PaginaTitulo, 'carro' => $carro, 'regions' => $regions]);
+        if (Auth::guard('client')->user() != null) {
+            $id_client = Auth::guard('client')->user()->id;
+            $info_client = Clients::findOrFail($id_client);
+            $address_clients = ClientsAddress::where('clients_id', $id_client)->get();
+        }
+
+        return view('pages.carro')->with([
+            'PaginaTitulo' => $PaginaTitulo,
+            'carro' => $carro,
+            'regions' => $regions,
+            'configuration' => $configuration,
+            'config_dispatchs' => $config_dispatchs,
+            'info_client' => $info_client,
+            'address_clients' => $address_clients
+        ]);
     }
 
 

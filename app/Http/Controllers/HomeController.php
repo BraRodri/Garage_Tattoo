@@ -123,38 +123,6 @@ class HomeController extends Controller
         }
     }
 
-    public function miCuenta()
-    {
-        $PaginaTitulo = "Mi Cuenta";
-        return view('pages.miCuenta', compact('PaginaTitulo'));
-    }
-
-    public function misPedidos()
-    {
-        $PaginaTitulo = "Estado Pedidos";
-        return view('pages.misPedidos', compact('PaginaTitulo'));
-    }
-
-    public function misDatos()
-    {
-        $PaginaTitulo = "Mis Datos de Cuenta";
-
-        $id_cliente = Auth::guard('client')->user()->id;
-        $datos = Clients::find($id_cliente);
-
-        if ($datos) {
-            return view('pages.misDatos')
-                ->with('PaginaTitulo', $PaginaTitulo)
-                ->with('datos', $datos);
-        }
-    }
-
-    public function misPuntos()
-    {
-        $PaginaTitulo = "Mis Puntos";
-        return view('pages.misPuntos', compact('PaginaTitulo'));
-    }
-
     public function allProducts()
     {
         $PaginaTitulo = "Productos";

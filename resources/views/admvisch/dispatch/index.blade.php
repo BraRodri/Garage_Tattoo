@@ -25,8 +25,23 @@
 
     <div class="clearfix"></div>
 
+    <div class="form-group">
+        <label class="control-label">¿Retiro en Tienda?</label>
+        @php
+            $class_status_1 = $configuration->office_shipping_active == 1 ? 'success' : 'danger';
+            $text_status_1 = $configuration->office_shipping_active == 1 ? 'Activado' : 'Desactivado';
+        @endphp
+        <a style="cursor: pointer;" class="retiro-tienda" id="<?php echo $configuration->id; ?>">
+            <span class="btn btn-<?php echo $class_status_1; ?>">
+                <?php echo $text_status_1; ?>
+            </span>
+        </a>
+    </div>
+
+    <div class="clearfix"></div>
 
     <div class="form-group">
+        <label class="control-label">Agregar un nuevo despacho:</label>
         <a href="{{ route('config.dispatch.enter') }}" type="button" class="btn btn-blue"><i class="fa fa-plus"></i>
             Nuevo</a>
     </div>
@@ -175,6 +190,34 @@
                     }
                 }
             });
+            });
+
+            jQuery(document).on("click", ".retiro-tienda", function() {
+
+                var $element = jQuery(this);
+                var id = $element.attr('id');
+                var url = "{{route('config.dispatch.retiro.tienda')}}";
+                var data = {
+                    module_name: "{{$module}}",
+                    id: id
+                }
+
+                jQuery.ajax({
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    type: "POST",
+                    encoding: "UTF-8",
+                    url: url,
+                    data: data,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 1) {
+                            $element.find('span').removeAttr('class').attr('class', '');
+                            $element.find('span').addClass('btn');
+                            $element.find('span').addClass(response.class_status);
+                            $element.find('span').text(response.text_status);
+                        }
+                    }
+                });
             });
         </script>
     </x-slot>

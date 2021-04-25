@@ -22,12 +22,11 @@ class CreateClientsAddressTable extends Migration
             $table->foreignId('locations_id')->constrained('locations');
             $table->integer('address_default')->default(0);
             $table->string('address');
+            $table->string('alias');
             $table->string('address_number');
             $table->string('office_number')->nullable();
             $table->integer('active')->default(0);
             $table->string('author');
-
-
 
             $table->timestamps();
         });

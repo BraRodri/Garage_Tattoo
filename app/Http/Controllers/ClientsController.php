@@ -130,7 +130,7 @@ class ClientsController extends Controller
                 'address_number' => Helper::postValue('document_address_number'),
                 'office_number' => Helper::postValue('document_office_number'),
                 'image' => $image,
-                'active' => Helper::postValue('active', 1),
+                'active' => 1,
                 'author' => $author
             );
 
