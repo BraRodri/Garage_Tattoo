@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttributesTable extends Migration
+class CreateAttributesProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('attributes_products', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('description')->default('');
-            $table->string('type')->default('');
-            $table->integer('active')->default(0);
-            $table->string('author');
-
+            $table->string('products_id')->constrained('products');
+            $table->string('attribute_values_id')->constrained('attributes_values');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attributes');
+        Schema::dropIfExists('attributes_products');
     }
 }

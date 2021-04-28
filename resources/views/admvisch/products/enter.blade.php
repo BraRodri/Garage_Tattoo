@@ -3,7 +3,7 @@
     @section('meta')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-@endsection
+    @endsection
     <ol class="breadcrumb bc-2">
         <li>
             <a href="<?php echo BASE_URL; ?>"><i class="entypo-home"></i>Home</a>
@@ -13,7 +13,7 @@
         </li>
         <li>
             <a href="<?php echo BASE_URL . $module; ?>"><?php echo
-                $title; ?></a>
+                                                        $title; ?></a>
         </li>
         <li class="active">
             <strong>Nuevo Ingreso</strong>
@@ -27,23 +27,21 @@
 
 
     @if (Session::has('error'))
-        @if (Session::get('error') == 'upload')
-            <div class="alert alert-danger"><strong>ERROR!</strong> El archivo no se pudo cargar. Asegúrese de que su
-                archivo no supere el tamaño indicado o no cumpla con el formato establecido.</div>
-        @endif
-        @if (Session::get('error') == 'failure')
-            <div class="alert alert-danger"><strong>ERROR!</strong> Se ha producido un error, favor vuelva a intentarlo.
-                Si el error persiste favor comunicarse al administrador.</div>
-        @endif
-        @if (Session::get('error') == 'duplicate')
-            <div class="alert alert-danger"><strong>ERROR!</strong> Se ha producido un error, el slider que intenta
-                ingresar ya se encuentra registrado.</div>
-        @endif
+    @if (Session::get('error') == 'upload')
+    <div class="alert alert-danger"><strong>ERROR!</strong> El archivo no se pudo cargar. Asegúrese de que su
+        archivo no supere el tamaño indicado o no cumpla con el formato establecido.</div>
+    @endif
+    @if (Session::get('error') == 'failure')
+    <div class="alert alert-danger"><strong>ERROR!</strong> Se ha producido un error, favor vuelva a intentarlo.
+        Si el error persiste favor comunicarse al administrador.</div>
+    @endif
+    @if (Session::get('error') == 'duplicate')
+    <div class="alert alert-danger"><strong>ERROR!</strong> Se ha producido un error, el slider que intenta
+        ingresar ya se encuentra registrado.</div>
+    @endif
     @endif
 
-    <form role="form" id="form1" method="post"
-        action="{{route('products.insert')}}"
-        enctype="multipart/form-data" class="custom-validate form-groups-bordered">
+    <form role="form" id="form1" method="post" action="{{route('products.insert')}}" enctype="multipart/form-data" class="custom-validate form-groups-bordered">
 
         @csrf
         <div class="row">
@@ -95,9 +93,9 @@
                                         <select class="form-control required" name="types_id" id="types_id">
                                             <option value="">Seleccionar</option>
                                             <?php if (current($types) > 0) {
-                                            foreach (end($types) as $type) { ?>
-                                            <option value="<?php echo $type['id']; ?>">
-                                                <?php echo $type['title']; ?></option>
+                                                foreach (end($types) as $type) { ?>
+                                                    <option value="<?php echo $type['id']; ?>">
+                                                        <?php echo $type['title']; ?></option>
                                             <?php }
                                             } ?>
                                         </select>
@@ -109,8 +107,7 @@
                                         <label class="control-label">Categoría</label>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <select class="searchable-optionList required" name="categories[]"
-                                                    id="categories" multiple="multiple" style="min-width:300px">
+                                                <select class="searchable-optionList required" name="categories[]" id="categories" multiple="multiple" style="min-width:300px">
                                                     <?php echo $categories; ?>
                                                 </select>
                                             </div>
@@ -142,27 +139,23 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Código Interno</label>
-                                    <input type="text" class="form-control required" name="sku" id="sku"
-                                        maxlength="255" />
+                                    <input type="text" class="form-control required" name="sku" id="sku" maxlength="255" />
                                     <label class="formNote">* Código debe ser único para cada producto.</label>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Nombre</label>
-                                    <input type="text" class="form-control required" name="title" id="title"
-                                        maxlength="255" />
+                                    <input type="text" class="form-control required" name="title" id="title" maxlength="255" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Precio Normal</label>
-                                    <input type="text" class="form-control required digits" name="normal_price"
-                                        id="normal_price" />
+                                    <input type="text" class="form-control required digits" name="normal_price" id="normal_price" />
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Precio Oferta</label>
-                                    <input type="text" class="form-control required digits" name="offer_price"
-                                        id="offer_price" />
+                                    <input type="text" class="form-control required digits" name="offer_price" id="offer_price" />
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label">Stock</label>
@@ -174,10 +167,8 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Control Stock?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
-                                            <input type="checkbox" name="stock_control" id="stock_control" value="1"
-                                                checked="checked">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
+                                            <input type="checkbox" name="stock_control" id="stock_control" value="1" checked="checked">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -185,8 +176,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Mínimo Cantidad</label>
-                                    <input type="text" class="form-control required digits" name="minimum_amount"
-                                        id="minimum_amount" value="0" />
+                                    <input type="text" class="form-control required digits" name="minimum_amount" id="minimum_amount" value="0" />
                                     <label class="formNote">* Cantidad mínima de compra, en caso de no existir un mínimo
                                         completar con 0.</label>
                                 </div>
@@ -251,14 +241,13 @@
                                             <input type="file" name="archive">
                                         </span>
                                         <span class="fileinput-filename"></span>
-                                        <a href="#" class="close fileinput-exists" data-dismiss="fileinput"
-                                            style="float: none">&times;</a>
+                                        <a href="#" class="close fileinput-exists" data-dismiss="fileinput" style="float: none">&times;</a>
                                     </div>
                                     <div class="clearfix"></div>
                                     <label class="formNote">
                                         * Formato <?php echo $archive_description; ?>.<br>
                                         * Tamaño máximo de carga <?php echo
-                                        Application\Helper::uploadSizeUser(); ?>.
+                                                                    Application\Helper::uploadSizeUser(); ?>.
                                     </label>
 
                                 </div>
@@ -317,8 +306,7 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Contenido Destacado?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
                                             <input type="checkbox" name="featured" id="featured" value="1">
                                         </div>
                                     </div>
@@ -328,8 +316,7 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Contenido Oferta?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
                                             <input type="checkbox" name="offer" id="offer" value="1">
                                         </div>
                                     </div>
@@ -339,10 +326,8 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Despacho Domicilio?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
-                                            <input type="checkbox" name="shipping_active" id="shipping_active" value="1"
-                                                checked="checked">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
+                                            <input type="checkbox" name="shipping_active" id="shipping_active" value="1" checked="checked">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -351,10 +336,8 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Retiro en Tienda?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
-                                            <input type="checkbox" name="office_shipping_active"
-                                                id="office_shipping_active" value="1">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
+                                            <input type="checkbox" name="office_shipping_active" id="office_shipping_active" value="1">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -363,8 +346,7 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Despacho Gratis?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
                                             <input type="checkbox" name="shipping_free" id="shipping_free" value="1">
                                         </div>
                                     </div>
@@ -374,10 +356,8 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Activar Registro?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
-                                            <input type="checkbox" name="active" id="active" value="1"
-                                                checked="checked">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
+                                            <input type="checkbox" name="active" id="active" value="1" checked="checked">
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>
@@ -396,8 +376,7 @@
                             <div class="panel-body color-gris-fondo form-groups-bordered">
 
                                 <div class="form-group">
-                                    <select multiple="multiple" size="10" name="relations[]"
-                                        class="dual-list-box"></select>
+                                    <select multiple="multiple" size="10" name="relations[]" class="dual-list-box"></select>
                                 </div>
 
                             </div>
@@ -414,14 +393,12 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Descripción General</label>
-                                    <textarea class="form-control ckeditor" name="general_description"
-                                        id="general_description"></textarea>
+                                    <textarea class="form-control ckeditor" name="general_description" id="general_description"></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="control-label">Descripción Técnica</label>
-                                    <textarea class="form-control ckeditor" name="technical_description"
-                                        id="technical_description"></textarea>
+                                    <textarea class="form-control ckeditor" name="technical_description" id="technical_description"></textarea>
                                 </div>
 
                                 <?php /*
@@ -459,8 +436,7 @@
                                 <div class="form-group">
                                     <label class="control-label">¿Activar Atributos?</label>
                                     <div class="col-md-12 no-padding">
-                                        <div id="label-switch" class="make-switch" data-on-label="SI"
-                                            data-off-label="NO">
+                                        <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
                                             <input type="checkbox" name="attribute_active" id="attribute_active" value="1">
                                         </div>
                                     </div>
@@ -468,18 +444,33 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="control-label">Agregue un nuevo atributo:</label>
+                                    <label class="control-label">Seleccione el tipo de atributo:</label>
                                     <select class="form-control w-75" name="attributo" id="losAttributos">
                                         <option value="">Seleccionar</option>
                                         <?php if (current($attributes) > 0) {
                                             foreach (end($attributes) as $atribute) { ?>
-                                                <option value="<?php echo $atribute['id']; ?>">
+                                                <option value="<?php echo $atribute['id'].'-'.$atribute['title']; ?>">
                                                     <?php echo $atribute['title']; ?></option>
-                                            <?php }
+                                        <?php }
                                         } ?>
                                     </select>
-                                    <button class="btn btn-primary mt-3" type="button" style="margin-top: 10px" onclick="aggAtributoProduct()">Agregar</button>
+
+
                                     <div class="clearfix"></div>
+                                    <hr>
+                                    <div id="combinaciones">
+                                        
+                                        <div id="attributoEspec">
+                                        </div>
+                                        <hr>
+                                        
+                                        <div id="attributosSelect">
+                                
+                                        
+                                        </div>
+                                    </div>
+                                    <div id="listaCom">
+                                    </div>
                                 </div>
 
                                 <div id="divDinamico">
@@ -499,8 +490,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Título</label>
-                                    <input type="text" class="form-control" name="meta_title" id="meta_title"
-                                        maxlength="255" />
+                                    <input type="text" class="form-control" name="meta_title" id="meta_title" maxlength="255" />
                                     <label class="formNote">
                                         * Titulo de la página: es el título que deseamos que aparezca en el buscador.
                                     </label>
@@ -508,8 +498,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Autor</label>
-                                    <input type="text" class="form-control" name="meta_author" id="meta_author"
-                                        maxlength="100" />
+                                    <input type="text" class="form-control" name="meta_author" id="meta_author" maxlength="100" />
                                     <label class="formNote">
                                         * Autor: El nombre del webmaster o de la empresa autora de la página web.
                                     </label>
@@ -517,8 +506,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Descripción</label>
-                                    <input type="text" class="form-control" name="meta_description"
-                                        id="meta_description" />
+                                    <input type="text" class="form-control" name="meta_description" id="meta_description" />
                                     <label class="formNote">
                                         * Explica con un par de frases el contenido de la web.
                                     </label>
@@ -526,8 +514,7 @@
 
                                 <div class="form-group">
                                     <label class="control-label">Palabras Claves (Keywords)</label>
-                                    <textarea class="form-control" name="meta_keyword" id="meta_keyword"
-                                        rows="5"></textarea>
+                                    <textarea class="form-control" name="meta_keyword" id="meta_keyword" rows="5"></textarea>
                                     <label class="formNote">
                                         * Palabras que expecifiquen el contenido de la web. Por ejemplo: juegos, juegos
                                         online, etc. (max: 200 caracteres).
@@ -566,8 +553,7 @@
 
                 <div class="form-group">
                     <button type="submit" class="btn btn-blue"><i class="fa fa-save"></i> Guardar</button>
-                    <a href="{{route('products')}}"
-                        type="button" class="btn btn-primary"><i class="fa fa-angle-double-left"></i> Cancelar y
+                    <a href="{{route('products')}}" type="button" class="btn btn-primary"><i class="fa fa-angle-double-left"></i> Cancelar y
                         Volver</a>
                 </div>
 
@@ -578,18 +564,20 @@
 
     <br />
     <x-slot name="js">
+        <script src="{{asset('assets/js/util/attributes.js')}}" type="text/javascript"></script>
         <script type="text/javascript">
-
             function aggAtributoProduct() {
                 var id_atributo = document.getElementById("losAttributos").value;
 
-                if(id_atributo){
+                if (id_atributo) {
                     var url = "{{route('products.attribute.get', ':id')}}";
                     url = url.replace(':id', id_atributo);
                     var data = {}
 
                     $.ajax({
-                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         type: "GET",
                         encoding: "UTF-8",
                         url: url,
@@ -606,12 +594,12 @@
                             var valoresSeparados = atributosValues.split(',');
 
                             var htmlDivContainer = '<div class="form-group">';
-                                htmlDivContainer +=     '<label class="control-label">'+atributeNombre+'</label>';
-                                htmlDivContainer +=     '<select class="form-control js-example-basic-multiple" multiple="multiple" id="" name="" placeholder="Seleccione...">';
-                                htmlDivContainer +=         '<option>1</option>';
-                                htmlDivContainer +=     '</select>';
-                                htmlDivContainer +=     '<div class="clearfix"></div>';
-                                htmlDivContainer += '</div>';
+                            htmlDivContainer += '<label class="control-label">' + atributeNombre + '</label>';
+                            htmlDivContainer += '<select class="form-control js-example-basic-multiple" multiple="multiple" id="" name="" placeholder="Seleccione...">';
+                            htmlDivContainer += '<option>1</option>';
+                            htmlDivContainer += '</select>';
+                            htmlDivContainer += '<div class="clearfix"></div>';
+                            htmlDivContainer += '</div>';
 
                             $("#divDinamico").append(htmlDivContainer);
                         }
@@ -665,7 +653,7 @@
                             $('.nav-tabs a small.required').remove();
                             var validatePane = $(
                                 '.tab-content.tab-validate .tab-pane:has(input.error), .tab-content.tab-validate .tab-pane:has(select.error)'
-                                ).each(function() {
+                            ).each(function() {
                                 var id = $(this).attr('id');
                                 $('.nav-tabs').find('a[href^="#' + id + '"]')
                                     .append(' <small class="required">***</small>');
@@ -690,13 +678,15 @@
                     $('.dual-list-box').remove();
                     contenedor.append(
                         '<select multiple="multiple" size="10" name="relations[]" class="dual-list-box"></select>'
-                        );
+                    );
 
                     var url = "{{route('products.getProductsRelations')}}";
                     var data = {}
 
                     $.ajax({
-                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         type: "POST",
                         encoding: "UTF-8",
                         url: url,
@@ -740,11 +730,6 @@
                     },
                 });
             });
-
-
-
-
-
         </script>
     </x-slot>
 </x-app-layoutt>

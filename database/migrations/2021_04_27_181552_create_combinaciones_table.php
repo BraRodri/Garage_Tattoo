@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAttributesValuesTable extends Migration
+class CreateCombinacionesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateAttributesValuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attributes_values', function (Blueprint $table) {
+        Schema::create('combinaciones', function (Blueprint $table) {
             $table->id();
-
-            $table->string('title')->default('');
-            $table->integer('active')->default(0);
-            $table->string('author');
-
+            $table->string('sku');
+            $table->string('stock');
+            $table->string('price');
+            $table->string('products_id')->constrained('products');;
+            $table->string('attibutes_products')->constrained('attibutes_products');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateAttributesValuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attributes_values');
+        Schema::dropIfExists('combinaciones');
     }
 }

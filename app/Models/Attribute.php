@@ -11,6 +11,6 @@ class Attribute extends Model
     protected $table = 'attributes';
 
     protected $fillable = [
-        'title', 'description', 'values', 'type', 'active', 'author'
+        'title', 'description', 'type', 'active', 'author'
     ];
 }

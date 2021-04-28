@@ -34,7 +34,9 @@ use App\Http\Controllers\SlidersPartnersController;
 use App\Http\Controllers\MetadataController;
 use App\Http\Controllers\ProductsGalleriesController;
 use App\Http\Controllers\UserController;
+use App\Models\AttributesValues;
 use App\Models\Cotizaciones;
+use Application\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +50,6 @@ use App\Models\Cotizaciones;
 */
 
 Auth::routes();
-
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/admvisch/login', [LoginController::class, 'showAdminLoginForm'])->name('login.admmin');
 Route::get('/login', [LoginController::class, 'showClientLoginForm'])->name('login.client');

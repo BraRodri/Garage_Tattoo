@@ -11,6 +11,9 @@ use App\Models\ProductsGalleries;
 use App\Models\ProductsRelations;
 use App\Models\Types;
 use App\Models\Attribute;
+use App\Models\AttributesProducts;
+use App\Models\AttributesValues;
+use App\Models\Combinaciones;
 use Application\Helper;
 use Application\HelperExcel;
 use Illuminate\Http\Request;
@@ -158,9 +161,8 @@ class ProductsController extends Controller
             ]);
     }
 
-    public function insert()
+    public function insert(Request $request)
     {
-
         $products = Products::where(['sku' => Helper::postValue('sku')])->get()->count();
 
         if ($products > 0) {
@@ -290,7 +292,33 @@ class ProductsController extends Controller
 
             if ($insert = Products::create($post)) {
                 $id = $insert->id;
-
+                /* Guardar Combinaciones */
+                    $combinaciones = $request->combinacion;
+                    $att = [];
+                    $com = [];
+                    for ($i=0; $i < count($combinaciones); $i+=4) {
+                        array_push($att,$combinaciones[$i]);
+                        array_push($com,[$combinaciones[$i+1], $combinaciones[$i+2], $combinaciones[$i+3]]);
+                    }
+                    for ($j=0; $j < count($att); $j++) {
+                        $postAttPro = array(
+                            'products_id' => $id,
+                            'attribute_values_id' => explode('-', $att[$j])[1]
+                        );
+                        if ($insertAttPro = AttributesProducts::create($postAttPro)) {
+                            for ($x=0; $x < count($com); $x++) { 
+                            $postComb = array(
+                                'sku' => $com[$x][0],
+                                'price' => $com[$x][1],
+                                'stock' => $com[$x][2],
+                                'products_id' => $id,
+                                'attibutes_products' => $insertAttPro->id
+                            );
+                            Combinaciones::create($postComb);
+                            }
+                        }
+                    }
+                /* Finaliza el guardado de combinaciones */
                 if (count($verifiedCategories) > 0) {
                     foreach ($verifiedCategories as $category_id) {
                         $post = array(
