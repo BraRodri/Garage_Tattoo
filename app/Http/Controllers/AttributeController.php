@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Log;
 use Application\Helper;
 use App\Models\Attribute;
+use App\Models\AttributesValues;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -43,8 +44,6 @@ class AttributeController extends Controller
         //
         $request->validate([
             'title' => 'required',
-            'description1' => 'required',
-            'valor' => 'required'
         ]);
 
         $author = (isset($_POST['author']) && !empty($_POST['author'])) ? Helper::postValue('author') : '';
@@ -79,7 +78,7 @@ class AttributeController extends Controller
             return redirect()->route('attributes');
         } else {
             session()->flash('error', 'failure');
-            return redirect()->route('attributes.enter');
+            return redirect()->route('attributes');
         }
     }
 
@@ -93,7 +92,10 @@ class AttributeController extends Controller
     {
         //
         $attribute = Attribute::findOrFail($id);
-        return view('admvisch.attributes.edit')->with(['attribute' => $attribute, 'title' => $this->title, 'module' => $this->module]);
+
+        $values_attributes = AttributesValues::where('atrribute_id', $id)->where('active', 1)->get();
+
+        return view('admvisch.attributes.edit')->with(['attribute' => $attribute, 'title' => $this->title, 'module' => $this->module, 'values_attributes' => $values_attributes]);
     }
 
     /**
@@ -112,8 +114,6 @@ class AttributeController extends Controller
 
         $post = array(
             'title' => Helper::postValue('title'),
-            'description' => Helper::postValue('description1'),
-            'values' => Helper::postValue('valor'),
             'type' => Helper::postValue('tipo'),
             'active' => Helper::postValue('active'),
             'author' => $author
@@ -135,7 +135,7 @@ class AttributeController extends Controller
             }
 
             session()->flash('error', 'success');
-            return redirect()->route('attributes');
+            return redirect()->route('attributes.edit', $id);
         } else {
             session()->flash('error', 'failure');
             return redirect()->route('attributes.edit', $id);
@@ -210,6 +210,78 @@ class AttributeController extends Controller
         $data = Attribute::findOrFail($id);
         if ($data) {
             echo json_encode(array("data" => $data));
+        }
+    }
+
+    public function insertValues(Request $request)
+    {
+        //
+        $request->validate([
+            'title' => 'required',
+        ]);
+
+        $id_attribute =  Helper::postValue('id_attribute');
+
+        $author = (isset($_POST['author']) && !empty($_POST['author'])) ? Helper::postValue('author') : '';
+
+        $post = array(
+            'title' => Helper::postValue('title'),
+            'description' => Helper::postValue('description1'),
+            'atrribute_id' => $id_attribute,
+            'active' => Helper::postValue('active', 0),
+            'author' => $author
+        );
+
+        if ($insert = AttributesValues::create($post)) {
+
+            $id_message = $insert->id;
+
+            if (LOG_GENERATE === true) {
+                Log::create([
+                    'id_user' => Helper::sessionSystemValue('id'),
+                    'date' => Helper::getDate($hour = false),
+                    'hour' => Helper::getHour(),
+                    'ip' => Helper::getIP(),
+                    'module' => $this->module,
+                    'action' => 'INGRESO',
+                    'identifier' => $id_message,
+                    'detail' => 'Ingresó nuevo respuesta "' . Helper::postValue('type') . '" con ID N°' . $id_message . '.'
+                ]);
+            }
+
+            session()->flash('error', 'success');
+            return redirect()->route('attributes.edit', $id_attribute);
+        } else {
+            session()->flash('error', 'failure');
+            return redirect()->route('attributes.edit', $id_attribute);
+        }
+    }
+
+    public function deleteValues($id)
+    {
+        //$id_attribute =  Helper::postValue('id_attribute');
+        $attribute_value = AttributesValues::findOrFail($id);
+
+        if ($delete = AttributesValues::findOrFail($id)->delete()) {
+
+            if (LOG_GENERATE === true) {
+                Log::create([
+                    'id_user' => Helper::sessionSystemValue('id'),
+                    'date' => Helper::getDate($hour = false),
+                    'hour' => Helper::getHour(),
+                    'ip' => Helper::getIP(),
+                    'module' => $this->module,
+                    'action' => 'ELIMINAR',
+                    'identifier' => $id,
+                    'detail' => 'Eliminó respuesta "' . $attribute_value->type . '" con ID N°' . $id . '.'
+                ]);
+            }
+
+            session()->flash('error', 'success');
+            return redirect()->route('attributes.edit', $attribute_value->atrribute_id);
+        } else {
+            session()->flash('error', 'failure');
+            return redirect()->route('attributes.edit', $attribute_value->atrribute_id);
         }
     }
 }

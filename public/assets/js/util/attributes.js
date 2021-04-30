@@ -8,7 +8,7 @@ $('#losAttributos').change(function() {
     var idAtt = val.split('-');
     $.ajax(
         {
-          url : 'http://127.0.0.1:8000/api/attribute-values/'  + idAtt[0],
+          url : 'http://www.garagetattoo.test/api/attribute-values/'  + idAtt[0],
           type: "GET"
         })
           .done(function(data) {
@@ -36,11 +36,11 @@ $('#losAttributos').change(function() {
 function elementosSeleccionados() {
     var arr;
     $('[name="checks[]"]').click(function() {
-        
+
         arr = $('[name="checks[]"]:checked').map(function(){
           return this.value;
         }).get();
-        
+
       });
       $('#btnSaveAtt').click(()=> {
         arrayAtributos.push(arr);
@@ -53,7 +53,7 @@ function elementosSeleccionados() {
             `;
         }
         imprimirCampos();
-        $('#guardar').click(function() { 
+        $('#guardar').click(function() {
           imprimirCombinacion(arrayAtributos,$('#sku1').val(),$('#price1').val(),$('#stock1').val());
          });
         $('#limpiar').click(()=> {
@@ -122,8 +122,8 @@ function imprimirCombinacion(att ,sku, price, stock) {
       </div>
       <hr>
     </div>
-    
+
     `;
-    
+
 }
 {/* <button id="limpiar" type="button" class="btn btn-primary">Limpiar</button> */}

@@ -65,34 +65,49 @@
                     </div>
 
                     <div class="sv-producto-agregar sv-p-centrar">
-                        @if ($value->stock > 0)
-                            @php
-                                 $agregado = 0;
-                            @endphp
-                            @foreach (Cart::getContent() as $detail)
 
-                                @if ($detail->attributes['sku'] == $value->sku)
-                                    @php
-                                        $agregado = 1;
-                                    @endphp
+                        @if($value->attribute_active == 0)
+
+                            @if ($value->stock > 0)
+                                @php
+                                    $agregado = 0;
+                                @endphp
+                                @foreach (Cart::getContent() as $detail)
+
+                                    @if ($detail->attributes['sku'] == $value->sku)
+                                        @php
+                                            $agregado = 1;
+                                        @endphp
+                                    @endif
+
+                                @endforeach
+
+                                @if ($agregado)
+                                    <a href="{{route('mi.carro')}}" class="btn btn-dark">PRODUCTO AGREGADO</a>
+                                    @else
+                                    <form action="{{ route('cart_details.store') }}" method="post" class="">
+                                        @csrf
+                                        <div class="row">
+                                            <div class="col">
+                                                <input type="number" class="form-control" name="quantity" id="quantity" min="1" max="{{$value->stock}}" value="1" style="width: 60px">
+                                            </div>
+                                            <div class="col">
+                                                <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
+                                            </div>
+                                        </div>
+                                        <input type="text" name="products_id" value="{{ $value->id }}" hidden />
+                                    </form>
                                 @endif
 
-                            @endforeach
-
-                            @if ($agregado)
-                                <a href="{{route('mi.carro')}}" class="btn btn-dark">PRODUCTO AGREGADO</a>
-                                @else
-                                <form action="{{ route('cart_details.store') }}" method="post" class="">
-                                    @csrf
-                                    <input type="text" name="products_id" value="{{ $value->id }}" hidden />
-                                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1" hidden>
-                                    <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
-                                </form>
+                                    @else
+                                    <a href="{{ route('detalle.producto', $value->slug) }}" class="btn btn-dark">VER DETALLES</a>
                             @endif
 
-                                @else
-                                <a href="{{ route('detalle.producto', $value->slug) }}" class="btn btn-dark">VER DETALLES</a>
+                            @else
+                            <a href="{{ route('detalle.producto', $value->slug) }}" class="btn btn-dark">AGREGAR AL CARRO</a>
+
                         @endif
+
                     </div>
                 </div>
             </div>
@@ -130,8 +145,13 @@
                                             <div class="product-name mb-3">
                                                 {{$value->title_producto}}
                                             </div>
+
                                             <p><strong>COD:</strong> {{$value->sku}}</p>
-                                            <p><strong>DISPONIBILIDAD:</strong> {{$value->stock}} Disponibles</p>
+                                            @if($value->attribute_active == 0)
+                                                <p><strong>DISPONIBILIDAD:</strong> {{$value->stock}} Disponibles</p>
+                                                @else
+                                                <p>Producto con precio variado.</p>
+                                            @endif
 
                                             @if($value->offer_price == '0')
 
@@ -179,37 +199,47 @@
                                             <div class="product-count">
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        @if ($value->stock > 0)
 
-                                                            @php
-                                                                $agregado = 0;
-                                                            @endphp
-                                                            @foreach (Cart::getContent() as $detail)
+                                                        @if($value->attribute_active == 0)
 
-                                                                @if ($detail->attributes['sku'] == $value->sku)
+                                                            @if ($value->stock > 0)
+
                                                                     @php
-                                                                        $agregado = 1;
+                                                                        $agregado = 0;
                                                                     @endphp
-                                                                @endif
+                                                                    @foreach (Cart::getContent() as $detail)
 
-                                                            @endforeach
+                                                                        @if ($detail->attributes['sku'] == $value->sku)
+                                                                            @php
+                                                                                $agregado = 1;
+                                                                            @endphp
+                                                                        @endif
 
-                                                            @if ($agregado)
-                                                                <h6 class="mt-1">Este producto ya se encuentro agregado en el carrito.</h6>
-                                                                <a href="{{route('mi.carro')}}" class="btn btn-warning mb-3">VER CARRITO</a>
-                                                            @else
-                                                                <label for="size">Cantidad:</label>
-                                                                <form action="{{ route('cart_details.store') }}" method="post" class="display-flex mb-4">
-                                                                    @csrf
-                                                                    <input type="text" name="products_id" value="{{ $value->id }}" hidden />
-                                                                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1">
-                                                                    <input type="submit" class="btn btn-warning" value="AGREGAR AL CARRO">
-                                                                </form>
+                                                                    @endforeach
+
+                                                                    @if ($agregado)
+                                                                        <h6 class="mt-1">Este producto ya se encuentro agregado en el carrito.</h6>
+                                                                        <a href="{{route('mi.carro')}}" class="btn btn-warning mb-3">VER CARRITO</a>
+                                                                    @else
+                                                                        <label for="size">Cantidad:</label>
+                                                                        <form action="{{ route('cart_details.store') }}" method="post" class="display-flex mb-4">
+                                                                            @csrf
+                                                                            <input type="text" name="products_id" value="{{ $value->id }}" hidden />
+                                                                            <input type="number" class="form-control" name="quantity" id="quantity" min="1" max="{{$value->stock}}" value="1">
+                                                                            <input type="submit" class="btn btn-warning" value="AGREGAR AL CARRO">
+                                                                        </form>
+                                                                    @endif
+
+                                                                @else
+                                                                <a href="#" class="btn btn-danger mt-2 mb-3">PRODUCTO AGOTADO</a>
                                                             @endif
 
-                                                        @else
-                                                        <a href="#" class="btn btn-danger mt-2 mb-3">PRODUCTO AGOTADO</a>
+                                                            @else
+                                                            <a href="{{ route('detalle.producto', $value->slug) }}" class="btn btn-warning mt-1 mb-3">AGREGAR AL CARRO</a>
+
                                                         @endif
+
+
                                                     </div>
                                                 </div>
                                             </div>

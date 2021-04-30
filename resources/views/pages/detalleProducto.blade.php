@@ -96,9 +96,9 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                     <strong>COD:</strong> {{$product->sku}}
                                 @endif
                             </p>
-                            <p>
-                                <strong>DISPONIBILIDAD:</strong> {{$product->stock}} Disponibles
-                            </p>
+                            @if($product->attribute_active == 0)
+                                <p><strong>DISPONIBILIDAD:</strong> {{$product->stock}} Disponibles</p>
+                            @endif
 
                             @if($product->offer_price == '0')
 
@@ -124,6 +124,58 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                             @endif
 
                         </div>
+
+                        <!-- Validación de atributos para el producto -->
+                        @if($product->attribute_active == 1)
+
+                            @php
+                                $count = 0;
+                            @endphp
+
+                            @foreach($combinaciones as $key => $value_combi)
+
+                                <ul>
+                                    <li>{{$value_combi->sku}}</li>
+                                    <li>{{$value_combi->stock}}</li>
+                                    <li>{{$value_combi->price}}</li>
+                                </ul>
+
+                                {{$value_combi->atributeProduct}}
+
+                                @foreach($value_combi->atributeProduct as $key => $value_att)
+
+
+
+                                    @if($value_att->attributeValues->attribute->type == "Seleccion"  && $value_att->attributeValues->atrribute_id == $value_att->attributeValues->attribute->id )
+                                        <div class="ws-productos-tipo-entrega">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <label for="size">{{$value_att->attributeValues->attribute->title}}:</label>
+                                                    <form action="#" class="display-flex mb-4">
+                                                        <select id="inputState" class="form-control">
+                                                            <option value="" selected> - Seleccione - </option>
+                                                            <option>{{$value_att->attributeValues->title}}</option>
+                                                        </select>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @else
+                                        Es el otro.
+
+                                    @endif
+
+                                    @php
+                                        $count++;
+                                    @endphp
+
+                                @endforeach
+
+
+                            @endforeach
+
+                        @endif
 
                         @php /*
                         <!-- color - producto -->
@@ -236,7 +288,7 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                             <form action="{{ route('cart_details.store') }}" method="post" class="display-flex mb-4">
                                                 @csrf
                                                 <input type="text" name="products_id" value="{{ $product->id }}" hidden />
-                                                <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1">
+                                                <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1" max="{{$product->stock}}">
                                                 <input type="submit" class="btn btn-warning" value="AGREGAR AL CARRO">
                                             </form>
                                         @endif
@@ -380,6 +432,7 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
 
                 <div class="row">
                     @foreach($productFeatured as $key => $value)
+
                         <div class="col-12 col-sm-6 col-md-6 col-xl-3">
                             <div class="sv-producto-mod">
                                 <a href="{{ route('detalle.producto', $value->slug_producto) }}">
@@ -401,6 +454,8 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                     @if(!$existe)
                                         <img src="{{ asset('/files/productsGalleries/img/sin-imagen.jpg') }}" class="img-fluid hvr-shrink" alt=".">
                                     @endif
+
+                                </a>
 
                                 <p>{{$value->title_category}}</p>
                                 <h2 class="text-center"> {{$value->title_product}} </h2>
@@ -428,6 +483,9 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                 </div>
 
                                 <div class="sv-producto-agregar sv-p-centrar">
+
+                                    @if($value->attribute_active == 0)
+
                                         @if ($value->stock > 0)
                                             @php
                                                 $agregado = 0;
@@ -448,14 +506,26 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                                 <form action="{{ route('cart_details.store') }}" method="post" class="">
                                                     @csrf
                                                     <input type="text" name="products_id" value="{{ $value->product_id }}" hidden />
-                                                    <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1" hidden>
-                                                    <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <input type="number" class="form-control" name="quantity" id="quantity" min="1" max="{{$value->stock}}" value="1" style="width: 60px">
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
+                                                        </div>
+                                                    </div>
                                                 </form>
                                             @endif
 
                                             @else
                                             <a href="{{ route('detalle.producto', $value->slug_producto) }}" class="btn btn-dark">VER DETALLES</a>
                                         @endif
+
+                                        @else
+                                        <a href="{{ route('detalle.producto', $value->slug_producto) }}" class="btn btn-dark">AGREGAR AL CARRO</a>
+
+                                    @endif
+
                                 </div>
                             </div>
                         </div>
@@ -513,34 +583,49 @@ function obtenerPorcentajeDescuento($precio_normal, $precio_oferta)
                                 </div>
 
                                 <div class="sv-producto-agregar sv-p-centrar">
-                                    @if ($value->stock > 0)
-                                        @php
-                                            $agregado = 0;
-                                        @endphp
-                                        @foreach (Cart::getContent() as $detail)
 
-                                            @if ($detail->attributes['sku'] == $value->sku)
-                                                @php
-                                                    $agregado = 1;
-                                                @endphp
+                                    @if($value->attribute_active == 0)
+
+                                        @if ($value->stock > 0)
+                                            @php
+                                                $agregado = 0;
+                                            @endphp
+                                            @foreach (Cart::getContent() as $detail)
+
+                                                @if ($detail->attributes['sku'] == $value->sku)
+                                                    @php
+                                                        $agregado = 1;
+                                                    @endphp
+                                                @endif
+
+                                            @endforeach
+
+                                            @if ($agregado)
+                                                <a href="{{route('mi.carro')}}" class="btn btn-dark">PRODUCTO AGREGADO</a>
+                                            @else
+                                                <form action="{{ route('cart_details.store') }}" method="post" class="">
+                                                    @csrf
+                                                    <input type="text" name="products_id" value="{{ $value->product_id }}" hidden />
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <input type="number" class="form-control" name="quantity" id="quantity" min="1" max="{{$value->stock}}" value="1" style="width: 60px">
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             @endif
 
-                                        @endforeach
-
-                                        @if ($agregado)
-                                            <a href="{{route('mi.carro')}}" class="btn btn-dark">PRODUCTO AGREGADO</a>
-                                        @else
-                                            <form action="{{ route('cart_details.store') }}" method="post" class="">
-                                                @csrf
-                                                <input type="text" name="products_id" value="{{ $value->product_id }}" hidden />
-                                                <input type="number" class="form-control" name="quantity" id="quantity" min="1" value="1" hidden>
-                                                <input type="submit" class="btn btn-dark" value="AGREGAR AL CARRO">
-                                            </form>
+                                            @else
+                                            <a href="{{ route('detalle.producto', $value->slug_producto) }}" class="btn btn-dark">VER DETALLES</a>
                                         @endif
 
                                         @else
-                                        <a href="{{ route('detalle.producto', $value->slug_producto) }}" class="btn btn-dark">VER DETALLES</a>
+                                        <a href="{{ route('detalle.producto', $value->slug_producto) }}" class="btn btn-dark">AGREGAR AL CARRO</a>
+
                                     @endif
+
                                 </div>
                             </div>
                         </div>

@@ -18,8 +18,8 @@ class CreateCombinacionesTable extends Migration
             $table->string('sku');
             $table->string('stock');
             $table->string('price');
-            $table->string('products_id')->constrained('products');;
-            $table->string('attibutes_products')->constrained('attibutes_products');
+            $table->foreignId('products_id')->constrained('products');;
+            $table->foreignId('attibutes_products')->constrained('attributes_products');
             $table->timestamps();
         });
     }

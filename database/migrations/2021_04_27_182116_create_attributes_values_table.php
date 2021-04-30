@@ -17,7 +17,7 @@ class CreateAttributesValuesTable extends Migration
             $table->id();
             $table->string('title');
             $table->string('description');
-            $table->string('atrribute_id');
+            $table->foreignId('atrribute_id')->constrained('attributes');
             $table->string('active');
             $table->string('author');
             $table->timestamps();

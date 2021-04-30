@@ -18,12 +18,6 @@
 
     <div class="clearfix"></div>
 
-
-    <div class="form-group">
-        <a href="{{ route('attributes.enter') }}" type="button" class="btn btn-blue"><i class="fa fa-plus"></i>
-            Nuevo</a>
-    </div>
-
     @if (Session::has('error'))
         @if (Session::get('error') == 'success')
             <div class="alert alert-success"><strong>OK!</strong> Proceso realizado correctamente.</div>
@@ -34,58 +28,131 @@
         @endif
     @endif
 
-    <div class="table-responsive">
-        <table class="table table-bordered datatable order-table" id="table-3">
-            <thead>
-                <tr class="replace-inputs">
-                    <th>ID</th>
-                    <th>Titulo</th>
-                    <th>Tipo</th>
-                    <th>Estado</th>
-                    <th>Fecha Actualización</th>
-                    <th>Modificador</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (count($attributes) > 0) {
-                foreach ($attributes as $attribute) {
+    <div class="row">
+        <div class="col-12 col-lg-4">
 
-                $class_status = $attribute->active == 1 ? 'success' : 'default';
-                $text_status = $attribute->active == 1 ? 'Activo' : 'Inactivo';
-                ?>
+            <div class="panel panel-primary">
 
-                    <tr id="<?php echo $attribute->id; ?>">
+                <div class="panel-heading container-blue">
+                    <div class="panel-title">Formulario de Ingreso</div>
+                </div>
 
-                        <td width="5%">#<?php echo $attribute->id; ?></td>
-                        <td><?php echo $attribute->title; ?></td>
-                        <td><?php echo $attribute->type; ?></td>
-                        <td width="7%" align="center"><a style="cursor: pointer;" class="change-status"
-                            id="<?php echo $attribute->id; ?>"><span
-                                class="badge badge-<?php echo $class_status; ?>"><?php echo $text_status; ?></span></a></td>
-                        <td width="10%"><?php echo Application\Helper::dateFormatUser($attribute->updated_at);?></td>
-                        <td width="10%"><?php echo $attribute->author; ?></td>
-                        <td width="6%">
+                <div class="panel-body color-gris-fondo">
 
-                            <a type="button" class="btn btn-sm btn-gold" data-toggle="tooltip" data-placement="top" title=""
-                                data-original-title="Editar" href="{{ route('attributes.edit', $attribute->id) }}"><i
-                                    class="fa fa fa-pencil-square-o"></i></a>
+                    <form role="form" id="form1" method="post" action="{{route('attributes.insert')}}" enctype="multipart/form-data" class=" form-groups-bordered">
+
+                        @csrf
+                        <div class="form-group">
+                            <label class="control-label">Título</label>
+                            <input type="text" class="form-control required" name="title" id="title" maxlength="255" required="" />
+                        </div>
+
+                        @php /*
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <label class="control-label">Descripción</label>
+                                        <textarea class="form-control required" name="description1" id="description1"></textarea>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label">Valores</label>
+                                <input type="text" class="form-control required tagsinput" name="valor" id="valor" />
+                                <label class="formNote">* Para agregar múltiples valores, presionar enter al finalizar
+                                    de escribir el valor.</label>
+                                <div class="clearfix"></div>
+                            </div>
+                        */ @endphp
+
+                        <div class="form-group">
+                            <label class="control-label">Tipo</label>
+                            <select class="form-control" id="tipo" name="tipo" required="">
+                                <option value="Seleccion">Selección</option>
+                                <option value="Checkbox">Checkbox</option>
+                            </select>
+                            <label class="formNote">* Determina cómo se muestran los valores de este atributo.</label>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">¿Activar Registro?</label>
+                            <div class="col-md-12 no-padding">
+                                <div id="label-switch" class="make-switch" data-on-label="SI" data-off-label="NO">
+                                    <input type="checkbox" name="active" id="active" value="1" checked="checked">
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <input type="text" name="author" value="{{ Auth::user()->name }}" hidden>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-blue"><i class="fa fa-save"></i> Guardar</button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-8">
+            <div class="table-responsive">
+                <table class="table table-bordered datatable order-table" id="table-3">
+                    <thead>
+                        <tr class="replace-inputs">
+                            <th>ID</th>
+                            <th>Titulo</th>
+                            <th>Tipo</th>
+                            <th>Estado</th>
+                            <th>Fecha Actualización</th>
+                            <th>Modificador</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (count($attributes) > 0) {
+                        foreach ($attributes as $attribute) {
+
+                        $class_status = $attribute->active == 1 ? 'success' : 'default';
+                        $text_status = $attribute->active == 1 ? 'Activo' : 'Inactivo';
+                        ?>
+
+                            <tr id="<?php echo $attribute->id; ?>">
+
+                                <td width="5%">#<?php echo $attribute->id; ?></td>
+                                <td><?php echo $attribute->title; ?></td>
+                                <td><?php echo $attribute->type; ?></td>
+                                <td width="7%" align="center"><a style="cursor: pointer;" class="change-status"
+                                    id="<?php echo $attribute->id; ?>"><span
+                                        class="badge badge-<?php echo $class_status; ?>"><?php echo $text_status; ?></span></a></td>
+                                <td width="10%"><?php echo Application\Helper::dateFormatUser($attribute->updated_at);?></td>
+                                <td width="10%"><?php echo $attribute->author; ?></td>
+                                <td width="6%">
+
+                                    <a type="button" class="btn btn-sm btn-gold" data-toggle="tooltip" data-placement="top" title=""
+                                        data-original-title="Editar" href="{{ route('attributes.edit', $attribute->id) }}"><i
+                                            class="fa fa fa-pencil-square-o"></i></a>
 
 
-                            <a type="button" class="btn btn-sm btn-danger delete-register" data-toggle="tooltip"
-                                data-placement="top" title="" data-original-title="Eliminar"
-                                id="<?php echo $attribute->id; ?>"><i
-                                    class="fa fa-trash-o"></i></a>
+                                    <a type="button" class="btn btn-sm btn-danger delete-register" data-toggle="tooltip"
+                                        data-placement="top" title="" data-original-title="Eliminar"
+                                        id="<?php echo $attribute->id; ?>"><i
+                                            class="fa fa-trash-o"></i></a>
 
-                        </td>
+                                </td>
 
-                    </tr>
+                            </tr>
 
-                <?php
-                }
-                } ?>
-            </tbody>
-        </table>
+                        <?php
+                        }
+                        } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <input type="text" value="{{csrf_token()}}" name="_token" hidden>
@@ -170,6 +237,28 @@
             });
             });
         </script>
+
+        <script>
+            // Example starter JavaScript for disabling form submissions if there are invalid fields
+            (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+                });
+            }, false);
+            })();
+        </script>
+
     </x-slot>
 
 </x-app-layoutt>

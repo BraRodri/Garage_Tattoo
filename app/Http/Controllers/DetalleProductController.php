@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Combinaciones;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -53,12 +54,14 @@ class DetalleProductController extends Controller
             ->firstOrFail();
         $product_id = $product->id;
         $category_id = $product->categories[0]->categories_id;
-        $productFeatured = DB::select("SELECT *, products.title AS title_product, 
-        categories.title AS title_category, products.slug AS slug_producto, products.id AS product_id 
-        from products, categories, products_categories 
-        WHERE products_categories.categories_id = {$category_id} AND products_categories.products_id = products.id 
-        AND products.active = 1 AND products.id NOT IN (SELECT id FROM products WHERE id={$product_id}) 
-        ORDER BY RAND() LIMIT 4");
+
+        $productFeatured = DB::select("SELECT *, products.title AS title_product,
+        categories.title AS title_category, products.slug AS slug_producto, products.id AS product_id
+        from products, categories, products_categories
+        WHERE products_categories.categories_id = {$category_id} AND products_categories.products_id = products.id
+        AND categories.id = products_categories.categories_id
+        AND products.active = 1 AND products.id NOT IN (SELECT id FROM products WHERE id={$product_id})
+        ORDER BY RAND() LIMIT 10");
 
         $images_product = array();
         foreach ($productFeatured as $key => $value) {
@@ -66,11 +69,14 @@ class DetalleProductController extends Controller
             $images_product[] = $images_prod;
         }
 
+        $combinaciones = Combinaciones::where('products_id', $product_id)->get();
+
         if ($product) {
             return view('pages.detalleProducto')
-            ->with(['product' => $product, 
-                    'productFeatured' => $productFeatured])
-            ->with('images_product', $images_product);
+                ->with('product', $product)
+                ->with('productFeatured', $productFeatured)
+                ->with('images_product', $images_product)
+                ->with('combinaciones', $combinaciones);
         } else {
             dd('No sirvio ' + $id);
         }

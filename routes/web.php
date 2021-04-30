@@ -213,7 +213,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admvisch'], function () {
     Route::post('attributes/update', [AttributeController::class, 'update'])->name('attributes.update');
     Route::get('attributes/delete/{id}', [AttributeController::class, 'delete'])->name('attributes.delete');
     Route::post('attributes/status', [AttributeController::class, 'status'])->name('attributes.status');
-
+    Route::post('attributes/values/insert', [AttributeController::class, 'insertValues'])->name('attributes.values.insert');
+    Route::get('attributes/values/delete/{id}', [AttributeController::class, 'deleteValues'])->name('attributes.values.delete');
 
     // blog - admin
 

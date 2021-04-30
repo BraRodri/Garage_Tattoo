@@ -11,7 +11,8 @@ class AttributesProducts extends Model
     protected $fillable = [
         'products_id', 'attribute_values_id'
     ];
-    public function attributeValues(){
-        return $this->belongsTo(AttributeValues::class, 'attribute_values_id');
+    public function attributeValues()
+    {
+        return $this->belongsTo(AttributesValues::class, 'attribute_values_id');
     }
 }
