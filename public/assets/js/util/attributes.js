@@ -2,13 +2,14 @@
 
 var arrayAtributos = [];
 var combinaciones = [];
+var api = "http://localhost/workspace/Garage_Tattoo/api/attribute-values/";
 $('#losAttributos').change(function() {
     var val = $("#losAttributos option:selected").val();
     console.log(val);
     var idAtt = val.split('-');
     $.ajax(
         {
-          url : 'http://www.garagetattoo.test/api/attribute-values/'  + idAtt[0],
+          url : api  + idAtt[0],
           type: "GET"
         })
           .done(function(data) {
