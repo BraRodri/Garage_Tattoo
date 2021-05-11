@@ -3,6 +3,7 @@
 var arrayAtributos = [];
 var combinaciones = [];
 var api = "http://localhost/workspace/Garage_Tattoo/api/attribute-values/";
+var api = "http://localhost/workspace/Garage_Tattoo/api/attribute-values/";
 $('#losAttributos').change(function() {
     var val = $("#losAttributos option:selected").val();
     console.log(val);
